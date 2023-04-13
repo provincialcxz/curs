@@ -35,7 +35,17 @@ int save_button() {
     cout << "Сохранить?" << endl;
     cout << "1 - Да" << endl;
     cout << "2 - Нет" << endl;
-    cin >> num;
+    do {
+        cout << "Выберите действие: ";
+        if (!(cin >> num)) {
+            cout << "Неверный ввод, попробуйте еще раз" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else if (num < 1 || num > 2) {
+            cout << "Ошибка... Выберите 1 или 2" << endl;
+        }
+    } while (num < 1 || num > 2);
 
     return num;
 }
@@ -168,15 +178,27 @@ void editBook(Book& book) {
         {
         case titleB:
             cout << "Введите название книги: ";
-            cin >> book.title;
+            getline(cin, book.title);
+            while (book.title.empty()) {
+                cout << "Название книги не может быть пустым! Введите название книги: ";
+                getline(cin, book.title);
+            }
             break;
         case autorB:
             cout << "Введите имя автора: ";
-            cin >> book.author;
+            getline(cin, book.author);
+            while (book.author.empty()) {
+                cout << "Имя автора не может быть пустым! Введите имя автора: ";
+                getline(cin, book.author);
+            }
             break;
         case countBB:
             cout << "Введите количество книг: ";
-            cin >> book.amount;
+            while (!(cin >> book.amount) || book.amount < 0) {
+                cout << "Количество книг должно быть положительным числом! Введите количество книг: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             break;
         case exitB:
             return;
@@ -189,7 +211,9 @@ void editBook(Book& book) {
 
 void editReader(Reader& read) {
     int num;
-    enum { nameR = 1, countBR = 2, exitR = 0};
+    enum {
+        nameR = 1, countBR = 2, exitR = 0
+    };
 
     do {
         cout << "1. Редактировать имя автора" << endl;
@@ -198,16 +222,37 @@ void editReader(Reader& read) {
         cout << "Выберите действие: ";
         cin >> num;
 
-        switch (num)
-        {
-        case nameR:
+        switch (num) {
+        case nameR: {
+            string name;
             cout << "Введите имя читателя: ";
-            cin >> read.name;
+
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, name);
+
+            while (name.empty()) {
+                cout << "Имя читателя не может быть пустым. Введите имя читателя:\n";
+                getline(cin, name);
+            }
+
+            read.name = name;
             break;
-        case countBR:
+        }
+        case countBR: {
+            int countBR;
             cout << "Введите количество взятых книг: ";
-            cin >> read.numBook;
+            cin >> countBR;
+
+            while (cin.fail() || countBR < 0) {
+                cout << "Количество книг должно быть целым положительным числом. Попробуйте ещё раз:\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin >> countBR;
+            }
+
+            read.numBook = countBR;
             break;
+        }
         case exitR:
             return;
         default:
@@ -223,9 +268,6 @@ void findBookByTitle(Book* books, const string& title) {
     for (int i = 0; i < bCOUNT; i++) {
         if (books[i].title == title) {
             printBooks(books);
-            /*cout << "Название: " << books[i].title << endl;
-            cout << "Автор: " << books[i].author << endl;
-            cout << "Количество: " << books[i].amount << endl;*/
             found = true;
         }
     }
@@ -240,9 +282,7 @@ void findReaderByName(Reader* read, const string& name) {
 
     for (int i = 0; i < rCOUNT; i++) {
         if (read[i].name == name) {
-            // print_reader
-            cout << "Имя: " << read[i].name << endl;
-            cout << "Количество книг: " << read[i].numBook << endl;
+            printReader(read);
             found = true;
         }
     }
@@ -258,9 +298,6 @@ void findBookByAuthor(Book* books, string author) {
     for (int i = 0; i < bCOUNT; i++) {
         if (books[i].title == author) {
             printBooks(books);
-            /*cout << "Название: " << books[i].title << endl;
-            cout << "Автор: " << books[i].author << endl;
-            cout << "Количество: " << books[i].amount << endl;*/
             found = true;
         }
     }
@@ -490,12 +527,29 @@ void new_book(Book*& books) {
 
     Book newBook;
 
-    cout << "Введи название книги:\n";
+    cin.ignore();
+    cout << "Введите название книги:\n";
     getline(cin, newBook.title);
+
+    while (newBook.title.empty()) {
+        cout << "Название книги не может быть пустым. Введите название книги:\n";
+        getline(cin, newBook.title);
+    }
+
     cout << "Введите имя автора книги:\n";
     getline(cin, newBook.author);
+
+    while (newBook.author.empty()) {
+        cout << "Имя автора книги не может быть пустым. Введите имя автора книги:\n";
+        getline(cin, newBook.author);
+    }
+
     cout << "Введите количество книг:\n";
-    cin >> newBook.amount;
+    while (!(cin >> newBook.amount) || newBook.amount < 1) {
+        cout << "Количество книг должно быть целым положительным числом. Попробуйте ещё раз:\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
 
     Book* newBooks = new Book[bCOUNT + 1];
 
@@ -591,25 +645,37 @@ void delete_book(Book*& books) {
 void new_reader(Reader*& massR) {
     string name;
     cout << "Введите имя читателя: ";
-    cin >> name;
+    getline(cin, name);
+
+    while (name.empty()) {
+        cout << "Имя не может быть пустым! Введите имя читателя заново: ";
+        getline(cin, name);
+    }
 
     int numBook;
     cout << "Введите количество взятых книг: ";
     cin >> numBook;
 
-    Reader newReader = { name, numBook };
-
-    Reader* newArray = new Reader[rCOUNT + 1];
-
-    for (int i = 0; i < rCOUNT; i++) {
-        newArray[i] = massR[i];
+    while (cin.fail() || numBook < 0) {
+        cout << "Количество книг должно быть положительным! Введите количество книг заново: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> numBook;
     }
 
-    newArray[rCOUNT] = newReader;
+    Reader newReader = { name, numBook };
+
+    Reader* newReaders = new Reader[rCOUNT + 1];
+
+    for (int i = 0; i < rCOUNT; i++) {
+        newReaders[i] = massR[i];
+    }
+
+    newReaders[rCOUNT] = newReader;
 
     delete[] massR;
 
-    massR = newArray;
+    massR = newReaders;
 
     rCOUNT++;
 }
