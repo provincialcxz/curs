@@ -695,82 +695,82 @@ void menu() {
     Book* books = nullptr;
     Reader* read = nullptr;
 
-    cout << "1. Считать все книги из файла" << endl;
-    cout << "2. Считать всех читателей из файла" << endl;
-    cout << "3. Добавить новую книгу" << endl;
-    cout << "4. Удалить книгу" << endl;
-    cout << "5. Редактировать книгу" << endl;
-    cout << "6. Добавить нового читателя" << endl;
-    cout << "7. Удалить читателя" << endl;
-    cout << "8. Редактировать читателя" << endl;
-    cout << "9. Отсортировать книги по автору" << endl;
-    cout << "10. Отсортировать книги по названию" << endl;
-    cout << "11. Отсортировать читателей по имени" << endl;
-    cout << "12. Печать всех книг" << endl;
-    cout << "13. Печать всех читателей" << endl;
-    cout << "14. Отчет" << endl;
-    cout << "15. Выход" << endl;
-    cout << "Выберите действие: ";
-    cin >> num;
+    while (true) {
+        cout << "1. Считать все книги из файла" << endl;
+        cout << "2. Считать всех читателей из файла" << endl;
+        cout << "3. Добавить новую книгу" << endl;
+        cout << "4. Удалить книгу" << endl;
+        cout << "5. Редактировать книгу" << endl;
+        cout << "6. Добавить нового читателя" << endl;
+        cout << "7. Удалить читателя" << endl;
+        cout << "8. Редактировать читателя" << endl;
+        cout << "9. Отсортировать книги по автору" << endl;
+        cout << "10. Отсортировать книги по названию" << endl;
+        cout << "11. Отсортировать читателей по имени" << endl;
+        cout << "12. Печать всех книг" << endl;
+        cout << "13. Печать всех читателей" << endl;
+        cout << "14. Отчет" << endl;
+        cout << "15. Выход" << endl;
+        cout << "Выберите действие: ";
+        cin >> num;
 
-    switch (num)
-    {
-    case ReadB:
-        read_saveBook();
-        break;
-    case ReadR:
-        read_saveRead();
-        break;
-    case NewB:
-        new_book(books);
-        break;
-    case DelB:
-        delete_book(books);
-        break;
-    case EditB:
-        editBook(*books);
-        break;
-    case NewR:
-        new_reader(read);
-        break;
-    case DelR:
-        delete_reader(read);
-        break;
-    case EditR:
-        editReader(*read);
-        break;
-    case SortBautor:
-        sortBooksByAuthor();
-        break;
-    case SortBtitle:
-        sortBooksByTitle();
-        break;
-    case SortRname:
-        sortReaderByName();
-        break;
-    case PrintB:
-        printBooks(books);
-        break;
-    case PrintR:
-        printReader(read);
-        break;
-    case Report:
-        report(books, read);
-        break;
-    case exit:
-        return; // нужно правильно сделать выход из программы
-    default:
-        cout << "Ошибка..." << endl;
-        break;
+        switch (num)
+        {
+        case ReadB:
+            read_saveBook();
+            break;
+        case ReadR:
+            read_saveRead();
+            break;
+        case NewB:
+            new_book(books);
+            break;
+        case DelB:
+            delete_book(books);
+            break;
+        case EditB:
+            editBook(*books);
+            break;
+        case NewR:
+            new_reader(read);
+            break;
+        case DelR:
+            delete_reader(read);
+            break;
+        case EditR:
+            editReader(*read);
+            break;
+        case SortBautor:
+            sortBooksByAuthor();
+            break;
+        case SortBtitle:
+            sortBooksByTitle();
+            break;
+        case SortRname:
+            sortReaderByName();
+            break;
+        case PrintB:
+            printBooks(books);
+            break;
+        case PrintR:
+            printReader(read);
+            break;
+        case Report:
+            report(books, read);
+            break;
+        case exit:
+            return;
+        default:
+            cout << "Ошибка..." << endl;
+            break;
+        }
     }
 }
 
 int main() {
     setlocale(LC_ALL, "Rus");
 
-    while (true) {
-        menu();
-    }
+    menu();
 
     return 0;
 }
