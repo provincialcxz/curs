@@ -1,33 +1,4 @@
-﻿#include <iostream> 
-#include <stdio.h> 
-#include <algorithm> 
-#include <string>
-using namespace std;
-
-const char* pathB = "C:\\examples\\book.txt"; // файл с книгами 
-const char* pathR = "C:\\examples\\reader.txt"; // файл с читателями 
-const char* pathC = "C:\\examples\\count.txt"; // файл с отчетом 
-int bCOUNT{}, rCOUNT{};
-
-struct Book {
-    string title;
-    string author;
-    int amount;
-
-};
-
-struct Reader {
-    string name;
-    int numBook;
-};
-
-struct Counts {
-    int book_inLib;
-    int book_inRead;
-};
-
-Book* books = nullptr;
-Reader* read = nullptr;
+﻿#include "Header.h"
 
 int save_button() {
     int num{};
@@ -721,7 +692,7 @@ void delete_reader(Reader* massR) {
     fclose(reader);
 }
 
-void report(Book* books, Reader* readers) { //спросить как сделать правильно у кого какая книга
+void report(Book* books, Reader* readers) {
     FILE* count;
 
     if (fopen_s(&count, pathC, "w") != NULL) {
@@ -749,9 +720,8 @@ void report(Book* books, Reader* readers) { //спросить как сдела
 }
 
 void menu() {
-    cout << "Приветствую!!!" << endl; //вы попали в библиотеку или что-то типо
+    cout << "Приветствую!!!" << endl;
     cout << "Это мини-библиотека" << endl;
-    cout << "" << endl;
 
     system("pause");
 
@@ -832,12 +802,3 @@ void menu() {
         }
     }
 }
-
-int main() {
-    setlocale(LC_ALL, "Rus");
-
-    menu();
-
-    return 0;
-}
-// многофайловость!!!
