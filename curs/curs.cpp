@@ -1,4 +1,4 @@
-﻿#include "Header.h"
+﻿#include "curs.h"
 
 int save_button() {
     int num{};

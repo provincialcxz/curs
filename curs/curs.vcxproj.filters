@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="curs.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
